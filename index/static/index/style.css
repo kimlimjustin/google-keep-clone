@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css?family=Permanent+Marker");
+@import url("https://fonts.googleapis.com/css?family=Product+Sans");
+@import url("https://fonts.googleapis.com/css?family=Google+Sans");
+[data-theme="dark"]{
+    background-color: #202124 !important;
+}
+
+.form-error{
+    font-family: "Permanent Marker";
+    color: red;
+}
+
+.link{
+    color: inherit;
+    opacity: .8;
+    transition: .5s;
+}
+
+.link:hover{
+    opacity: .5;
+}

@@ -1,0 +1,24 @@
+{% extends 'index/layout.html' %}
+{% block body %}
+<div class="container">
+    <form action="{% url 'login' %}" class="box box-shadow mt-5 theme-reverse" method="POST">
+        <h1 class="box-title">Login user</h1>
+        <p class="form-error">{{message}}</p>
+        {% csrf_token %}
+        <div class="form-group form-animate">
+            <p class="form-label">Username:</p>
+            <input type="text" name="username" class="input-animate">
+            <span class="input-onFocus"></span>
+        </div>
+        <div class="form-group form-animate">
+            <p class="form-label">Password:</p>
+            <input type="password" name="password" class="input-animate">
+            <span class="input-onFocus"></span>
+        </div>
+        <div class="form-group">
+            <p class="form-label">Don't have account yet? <a class="link" href = "{% url 'register' %}">Register</a></p>
+            <input type="submit" value="Login" class="btn theme-adjust form-control">
+        </div>
+    </form>
+</div>
+{% endblock %}

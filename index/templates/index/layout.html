@@ -1,13 +1,17 @@
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Google Keep Clone{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'index/FireUI.min.css' %}">
+    <script src="{% static 'index/FireUI.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'index/style.css' %}">
     {% block script %}
     {% endblock %}
 </head>
-<body>
+<body data-theme="dark">
     {% block body %}
     {% endblock %}
 </body>
