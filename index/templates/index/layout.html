@@ -8,10 +8,28 @@
     <link rel="stylesheet" href="{% static 'index/FireUI.min.css' %}">
     <script src="{% static 'index/FireUI.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'index/style.css' %}">
+    <script src="{% static 'index/index.js' %}"></script>
     {% block script %}
     {% endblock %}
 </head>
-<body data-theme="dark">
+<body data-theme="{{user.UItheme}}">
+    <div class="top-nav nav-effect">
+        <div class="nav-padding">
+            <span class="nav-ham" id="nav-ham">&#9776;</span>
+            <img src = "{% static 'Icon/logo.png' %}" alt = "Google Forms Icon(CLONE)" class="keep-icon" title = "Keep">
+            <span class="nav-text" title = "Forms"><a href = "{% url 'index' %}" class="link keep-link">Keep CLONE</a></span>
+            <a href="{% url 'logout' %}">
+                <img src = "{% static 'Icon/Logout.png' %}" alt = "Logout Icon" class="navbar-icon float-right" title = "Logout">
+            </a>
+            <img src = "{% static 'Icon/setting.png' %}" alt = "Settings Icon" class="navbar-icon float-right" title = "Settings" open-modal data-modal="settings">
+        </div>
+    </div>
+    <div class="modal" id="settings">
+        <div class="modal-content theme-adjust">
+            <span class="modal-close-btn" data-modal="myModal">&times;</span>
+            <h1 class="modal-content-title">Settings</h1>
+        </div>
+    </div>
     {% block body %}
     {% endblock %}
 </body>

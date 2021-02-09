@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Permanent+Marker");
 @import url("https://fonts.googleapis.com/css?family=Product+Sans");
 @import url("https://fonts.googleapis.com/css?family=Google+Sans");
-[data-theme="dark"]{
+[data-theme="dark"], [data-theme="dark"] .theme-adjust{
     background-color: #202124 !important;
 }
 
@@ -18,4 +18,73 @@
 
 .link:hover{
     opacity: .5;
+}
+
+.top-nav{
+    float: left;
+    width: 100vw;
+}
+
+.keep-icon{
+    float: left;
+    width: 3rem;
+    margin-bottom: 0.4rem;
+}
+.nav-text{
+    float: left;
+    position: relative;
+    vertical-align: middle;
+    margin-top: 0.75rem;
+    font-family: "Product Sans";
+    color: #5f6368;
+    padding-left: 1rem;
+}
+
+.keep-link{
+    text-decoration: none;
+    font-family: "Google Sans";
+    font-weight: 400;
+}
+
+.nav-effect{box-shadow: 0 2px 30px -2px rgba(0,0,0,.2);}
+
+.float-right{
+    float: right;
+}
+
+.navbar-icon{
+    width: 2.5rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+.nav-padding{
+    padding: 10px 20px 10px;
+}
+
+.nav-ham{
+    float: left;
+    font-size: 1.8rem;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+[data-theme="dark"] .keep-link{
+    color: #fff;
+}
+[data-theme="light"] .keep-link{
+    color: #000;
+}
+
+.modal-content-title{
+    font-family: "Google Sans";
+    text-align: center;
+}
+
+@media only screen and (max-width: 600px){
+    :root{
+        font-size: 10px;
+    }
 }

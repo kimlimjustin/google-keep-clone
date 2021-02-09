@@ -1,34 +1,48 @@
-{% extends 'index/layout.html' %}
-{% block body %}
-<div class="container">
-    <form action="{% url 'register' %}" class="box box-shadow mt-5 theme-reverse" method="POST">
-        <h1 class="box-title">Register user</h1>
-        <p class="form-error">{{message}}</p>
-        {% csrf_token %}
-        <div class="form-group form-animate">
-            <p class="form-label">Username:</p>
-            <input type="text" class="input-animate" name="username">
-            <span class="input-onFocus"></span>
-        </div>
-        <div class="form-group form-animate">
-            <p class="form-label">Email:</p>
-            <input type="email" name="email" class="input-animate">
-            <span class="input-onFocus"></span>
-        </div>
-        <div class="form-group form-animate">
-            <p class="form-label">Password:</p>
-            <input type="password" name="password" class="input-animate">
-            <span class="input-onFocus"></span>
-        </div>
-        <div class="form-group form-animate">
-            <p class="form-label">Password Confirmation:</p>
-            <input type="password" name="confirmation" class="input-animate">
-            <span class="input-onFocus"></span>
-        </div>
-        <div class="form-group">
-            <p class="form-label">Already have account? <a class="link" href = "{% url 'login' %}">Login</a></p>
-            <input type="submit" value="Register" class="btn btn-dark form-control">
-        </div>
-    </form>
-</div>
-{% endblock %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Google Keep Clone{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'index/FireUI.min.css' %}">
+    <script src="{% static 'index/FireUI.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'index/style.css' %}">
+    <script src="{% static 'index/index.js' %}"></script>
+    {% block script %}
+    {% endblock %}
+</head>
+<body data-theme="dark">
+    <div class="container">
+        <form action="{% url 'register' %}" class="box box-shadow mt-5 theme-reverse" method="POST">
+            <h1 class="box-title">Register user</h1>
+            <p class="form-error">{{message}}</p>
+            {% csrf_token %}
+            <div class="form-group form-animate">
+                <p class="form-label">Username:</p>
+                <input type="text" class="input-animate" name="username">
+                <span class="input-onFocus"></span>
+            </div>
+            <div class="form-group form-animate">
+                <p class="form-label">Email:</p>
+                <input type="email" name="email" class="input-animate">
+                <span class="input-onFocus"></span>
+            </div>
+            <div class="form-group form-animate">
+                <p class="form-label">Password:</p>
+                <input type="password" name="password" class="input-animate">
+                <span class="input-onFocus"></span>
+            </div>
+            <div class="form-group form-animate">
+                <p class="form-label">Password Confirmation:</p>
+                <input type="password" name="confirmation" class="input-animate">
+                <span class="input-onFocus"></span>
+            </div>
+            <div class="form-group">
+                <p class="form-label">Already have account? <a class="link" href = "{% url 'login' %}">Login</a></p>
+                <input type="submit" value="Register" class="btn btn-dark form-control">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
