@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from .models import User
+import json
 
 # Create your views here.
 def index(request):
@@ -63,3 +64,16 @@ def register(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+def update_setting(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        UItheme = data["theme"]
+        view = data["view"]
+        user = User.objects.get(id = request.user.id)
+        user.UItheme = UItheme
+        user.view = view
+        user.save()
+        return JsonResponse({"message": "Success"})

@@ -83,8 +83,68 @@
     text-align: center;
 }
 
+.toggle-switch{
+    display: inline-block;
+    vertical-align: middle
+}
+
+.toggle-switch input[type = checkbox]{
+    display: none;
+}
+
+.setting-label{
+    margin-left: 0.3rem;
+}
+.input-animate, .form-animate{
+    color: inherit;
+}
+.sidenav-title{
+    text-align: center;
+    border-bottom: 1px solid;
+}
+.sidenav-link-btn{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    width: -webkit-fill-available;
+    cursor: pointer;
+    padding: 5px;
+}
+.sidenav-link-btn:nth-child(odd){
+    border-radius: 15px 5px;
+}
+.sidenav-link-btn:nth-child(even){
+    border-radius: 5px 15px;
+}
+.sidenav-link-btn img{
+    width: 3rem;
+    vertical-align: middle;
+    padding-right: 0.5rem;
+}
+.sidenav-link-btn span{
+    vertical-align: middle;
+}
+[data-theme="dark"] .sidenav-link-btn:hover{
+    background-color: #888a8b;
+}
+[data-theme="light"] .sidenav-link-btn:hover{
+    background-color: #d3d3d3;
+}
+.about-site{
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+}
 @media only screen and (max-width: 600px){
     :root{
-        font-size: 10px;
+        font-size: 12px;
+    }
+    .sidenav-title{
+        font-size: 25px;
+    }
+    .sidenav-link-btn img{
+        width: 40px;
+    }
+    .sidenav-link-btn span{
+        font-size: 16px;
     }
 }
