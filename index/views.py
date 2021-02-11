@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import IntegrityError
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from .models import User
+from .models import User, Notes, Checkbox, Labels
 import json
 
 # Create your views here.
@@ -76,4 +76,13 @@ def update_setting(request):
         user.UItheme = UItheme
         user.view = view
         user.save()
+        return JsonResponse({"message": "Success"})
+
+def create_note(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes(title = data["title"], note = data["note"], user = request.user)
+        note.save()
         return JsonResponse({"message": "Success"})

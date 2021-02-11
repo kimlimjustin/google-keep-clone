@@ -129,11 +129,77 @@
 [data-theme="light"] .sidenav-link-btn:hover{
     background-color: #d3d3d3;
 }
-.about-site{
-    position: absolute;
-    bottom: 0;
-    padding: 20px;
+.sidenav-content{
+    height: 80%;
+    overflow: auto;
+    margin: 0;
+    padding: 0 10px;
+    font-family: "Google Sans";
 }
+
+.about-site{
+    padding: 10px;
+    border-top: 1px solid;
+    font-family: "Product Sans";
+}
+
+.sidenav-title{
+    cursor: auto;
+}
+
+.float-left{
+    float: left;
+}
+
+.create-note-input{
+    height: 2rem;
+    border: none;
+    padding: 1rem;
+    color: inherit;
+    font-family: "Google Sans";
+    font-size: 1.2rem;
+    padding: 1.3rem;
+    width: -webkit-fill-available;
+    background-color: inherit;
+}
+
+.create-note-box{
+    background-color: inherit;
+    margin: 1rem 10%;
+    box-shadow: 1px 3px 8px 0;
+}
+
+[data-theme="dark"] .create-note-box{
+    box-shadow: 1px 3px 8px 0 #808080;
+}
+.form-group{
+    width: -webkit-fill-available;
+}
+.create-note-preview{
+    position: relative;
+}
+.create-note-preview img{
+    position: absolute;
+    right: 10%;
+    width: 3rem;
+    top: 1.5rem;
+    cursor: pointer;
+}
+.input-note-title, .input-note-text{
+    width: -webkit-fill-available;
+    border: none;
+    outline: 0;
+    padding: 10px;
+    background-color: transparent;
+    color: inherit;
+}
+.input-note-title{
+    font-size: 1.2rem;
+}
+.input-note-text{
+    font-size: 1rem;
+}
+
 @media only screen and (max-width: 600px){
     :root{
         font-size: 12px;
