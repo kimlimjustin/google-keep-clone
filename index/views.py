@@ -83,6 +83,6 @@ def create_note(request):
         return HttpResponseRedirect(reverse('index'))
     if request.method == "POST":
         data = json.loads(request.body)
-        note = Notes(title = data["title"], note = data["note"], user = request.user)
+        note = Notes(title = data["title"], note = data["note"], user = request.user, color = data["color"])
         note.save()
         return JsonResponse({"message": "Success"})

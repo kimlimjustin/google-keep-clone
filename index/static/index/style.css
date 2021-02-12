@@ -167,6 +167,7 @@
     background-color: inherit;
     margin: 1rem 10%;
     box-shadow: 1px 3px 8px 0;
+    padding: 10px;
 }
 
 [data-theme="dark"] .create-note-box{
@@ -180,9 +181,9 @@
 }
 .create-note-preview img{
     position: absolute;
-    right: 10%;
-    width: 3rem;
-    top: 1.5rem;
+    right: 12%;
+    width: 2rem;
+    top: 2rem;
     cursor: pointer;
 }
 .input-note-title, .input-note-text{
@@ -198,6 +199,33 @@
 }
 .input-note-text{
     font-size: 1rem;
+}
+
+.create-note-option{
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.input-color-option{
+    position:relative;
+    display: inline-block;
+}
+
+.select-color{
+    position: absolute;
+    padding: 10px;
+    display: none;
+    box-shadow: 1px 1px 6px;
+}
+.select-color-text{
+    color: inherit;
+    margin: 2px;
+    border-bottom: 1px solid;
+}
+.input-color-option:hover .select-color{
+    display: block;
 }
 
 @media only screen and (max-width: 600px){
