@@ -11,7 +11,9 @@ def index(request):
     # User should be authenticated.
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
-    return render(request, "index/index.html")
+    return render(request, "index/index.html", {
+        "notes": Notes.objects.filter(user = request.user)
+    })
 
 def login_view(request):
     # Check if the user is logged in

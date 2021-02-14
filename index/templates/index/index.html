@@ -1,5 +1,8 @@
 {% extends 'index/layout.html' %}
 {% load static %}
+{% block script %}
+<script src="{% static 'index/index.js' %}"></script>
+{% endblock %}
 {% block body %}
 <div class="container">
     <div class="form-group create-note-preview float-left">
