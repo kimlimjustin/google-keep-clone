@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     let randomId = Math.random().toString(36).substring(7)
                     let anotherRandomId = Math.random().toString(36).substring(7)
                     element.innerHTML = `<input type ="checkbox" id="${randomId}" onclick="return false;"><label for="${randomId}"><input type="text" placeholder="Your item" class="input-animate" id="${anotherRandomId}"></label>`
-                    i.parentNode.insertBefore(element, i)
+                    i.parentNode.parentNode.insertBefore(element, i.parentNode)
                     let inputItem = document.getElementById(anotherRandomId)
                     inputItem.focus()
                     inputItem.value = e.key;
@@ -45,14 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const submitNote = event => {
                 if(!element.contains(event.target) && document.body.contains(event.target)){
                     let title = document.querySelector(".input-note-title").value;
-                    if(title.length){
+                    let tasks = []
+                    element.querySelectorAll(".checkbox-item").forEach(checkbox => {
+                        if(checkbox.querySelector(`input[type="text"]`).value.length) tasks.push(checkbox.querySelector(`input[type="text"]`).value)
+                    })
+                    if(title.length || tasks.length){
                         fetch('/create_note', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrf},
                             body: JSON.stringify({
                                 title: title,
                                 note: "",
-                                color: document.querySelector("#select-color-input").value
+                                color: document.querySelector("#select-color-input").value,
+                                tasks: tasks
                             })
                         })
                         .then(response => response.json())
@@ -111,7 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             body: JSON.stringify({
                                 title: title,
                                 note: note,
-                                color: document.querySelector("#select-color-input").value
+                                color: document.querySelector("#select-color-input").value,
+                                tasks: []
                             })
                         })
                         .then(response => response.json())

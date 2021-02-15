@@ -87,4 +87,9 @@ def create_note(request):
         data = json.loads(request.body)
         note = Notes(title = data["title"], note = data["note"], user = request.user, color = data["color"])
         note.save()
+        for i in data["tasks"]:
+            task = Checkbox(todo = i)
+            task.save()
+            note.todos.add(task)
+            note.save()
         return JsonResponse({"message": "Success"})
