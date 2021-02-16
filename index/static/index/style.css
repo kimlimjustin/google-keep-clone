@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Permanent+Marker");
 @import url("https://fonts.googleapis.com/css?family=Product+Sans");
 @import url("https://fonts.googleapis.com/css?family=Google+Sans");
+
+body{
+    overflow-x: hidden;
+}
 [data-theme="dark"], [data-theme="dark"] .theme-adjust{
     background-color: #202124 !important;
 }
@@ -229,8 +233,15 @@
 }
 
 .checkbox-item{
-    border: 1px solid;
-    color: inherit;
+    border: 1px solid #808080;
+    position:relative;
+}
+
+.delete-task{
+    position: absolute;
+    right: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .checkbox-item input[type="text"]{
@@ -242,7 +253,7 @@
 
 @media only screen and (max-width: 600px){
     :root{
-        font-size: 12px;
+        font-size: 14px;
     }
     .sidenav-title{
         font-size: 25px;

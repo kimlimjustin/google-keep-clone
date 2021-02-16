@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const csrf = Cookies.get('csrftoken');
     let passCreateNote = false;
 
+    const trackUpdateColorInput = () => {
+        document.querySelector("#select-color-input").addEventListener("input", function(){
+            document.querySelector(".create-note-box").style.backgroundColor = this.value;
+        })
+    }
+
     const addListItem = () => {
         document.querySelectorAll(".add-list-item").forEach(i => {
             i.addEventListener("keydown", e => {
@@ -11,15 +17,45 @@ document.addEventListener("DOMContentLoaded", () => {
                     element.classList.add('checkbox-item');
                     let randomId = Math.random().toString(36).substring(7)
                     let anotherRandomId = Math.random().toString(36).substring(7)
-                    element.innerHTML = `<input type ="checkbox" id="${randomId}" onclick="return false;"><label for="${randomId}"><input type="text" placeholder="Your item" class="input-animate" id="${anotherRandomId}"></label>`
+                    element.innerHTML = `<input type ="checkbox" id="${randomId}" onclick="return false;"><label for="${randomId}"><input type="text" placeholder="Your item" class="input-animate" id="${anotherRandomId}"><span class="delete-task" title="delete element">&times;</span></label>`
                     i.parentNode.parentNode.insertBefore(element, i.parentNode)
                     let inputItem = document.getElementById(anotherRandomId)
                     inputItem.focus()
                     inputItem.value = e.key;
+                    element.querySelector(".delete-task").addEventListener('click', () => {
+                        element.parentNode.removeChild(element)
+                    })
                 }
             })
         })
     }
+
+    const showCheckbox = e => {
+        let checkbox = e.target;
+        let inputNoteElement = document.querySelector(".input-note-text")
+        let tasks = inputNoteElement.value.split('\n').filter(el => el !== "");
+        tasks.forEach(task => {
+            let taskElement = document.createElement('div');
+            taskElement.classList.add('checkbox-item');
+            let randomId = Math.random().toString(36).substring(7);
+            taskElement.innerHTML = `<input type ="checkbox" id="${randomId}" onclick="return false;"><label for="${randomId}"><input type="text" placeholder="Your item" class="input-animate" value="${task}"><span class="delete-task" title="delete element">&times;</span></label>`;
+            taskElement.querySelector(".delete-task").addEventListener('click', () => {
+                taskElement.parentNode.removeChild(taskElement)
+            })
+            inputNoteElement.parentNode.insertBefore(taskElement ,inputNoteElement)
+        })
+        let inputNewTaskElement = document.createElement('div');
+        inputNewTaskElement.classList.add('checkbox-item');
+        inputNewTaskElement.innerHTML = `<input type = "text" placeholder="Add list item" class="input-animate add-list-item">`;
+        inputNoteElement.parentNode.insertBefore(inputNewTaskElement, inputNoteElement);
+        if(!tasks.length) document.querySelector(".add-list-item").focus();
+        addListItem()
+
+        inputNoteElement.parentNode.removeChild(inputNoteElement)
+        checkbox.id = "hide-checkbox";
+        checkbox.removeEventListener('click', showCheckbox)
+    }
+
     const addNewListEvent = () => {
         document.querySelector("#new-list-btn").addEventListener("click", () => {
             let element = document.createElement('div');
@@ -37,11 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     <input type="color" value = "#202124" id="select-color-input"></input>
                 </div>
             </div>
-            <img src = "/static/Icon/todo.png" class="create-note-option" title = "Hide checkboxes">
+            <img src = "/static/Icon/todo.png" class="create-note-option" title = "Hide checkboxes" id="hide-checkbox">
             </div>`;
             document.querySelector(".create-note-preview").replaceWith(element);
             document.querySelector(".add-list-item").focus();
             addListItem();
+            trackUpdateColorInput();
             const submitNote = event => {
                 if(!element.contains(event.target) && document.body.contains(event.target)){
                     let title = document.querySelector(".input-note-title").value;
@@ -96,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <input type="color" value = "#202124" id="select-color-input"></input>
                 </div>
             </div>
-            <img src = "/static/Icon/todo.png" class="create-note-option" title = "Show checkboxes">
+            <img src = "/static/Icon/todo.png" class="create-note-option" title = "Show checkboxes" id="show-checkbox">
             </div>`;
             document.querySelector(".create-note-preview").replaceWith(element);
             document.querySelectorAll(".textarea-auto-adjust").forEach(textarea => {
@@ -105,11 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     textarea.style.height = textarea.scrollHeight + 'px';
                 })
             })
+            trackUpdateColorInput();
+            element.querySelector("#show-checkbox").addEventListener("click", showCheckbox)
             const submitNote = event => {
                 if(!element.contains(event.target) && document.body.contains(event.target)){
                     let title = document.querySelector(".input-note-title").value;
-                    let note = document.querySelector(".input-note-text").value;
-                    if(title.length || note.length){
+                    let note = document.querySelector(".input-note-text")? document.querySelector(".input-note-text").value : "";
+                    let tasks = []
+                    element.querySelectorAll(".checkbox-item").forEach(checkbox => {
+                        if(checkbox.querySelector(`input[type="text"]`).value.length) tasks.push(checkbox.querySelector(`input[type="text"]`).value)
+                    })
+                    if(title.length || note.length || tasks.length){
                         fetch('/create_note', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrf},
@@ -117,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 title: title,
                                 note: note,
                                 color: document.querySelector("#select-color-input").value,
-                                tasks: []
+                                tasks: tasks
                             })
                         })
                         .then(response => response.json())
