@@ -29,6 +29,33 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
     }
+    
+    const closeCheckbox = e => {
+        let el = e.target;
+        let taskElements = el.parentNode.querySelectorAll(".checkbox-item");
+        var tasks = [];
+        taskElements.forEach(taskEl => {
+            taskEl.querySelector(`input[type="text"]`).value? tasks.push(taskEl.querySelector(`input[type="text"]`).value):null;
+            taskEl.parentNode.removeChild(taskEl)
+        })
+        const notes = tasks.join('\n\n');
+        let noteElement = document.createElement('textarea');
+        noteElement.classList.add('input-note-text');
+        noteElement.classList.add('textarea-auto-adjust');
+        noteElement.placeholder = "Take a note...";
+        noteElement.addEventListener("input", () => {
+            noteElement.style.height = "5px";
+            noteElement.style.height = noteElement.scrollHeight + 'px';
+        })
+        el.parentNode.insertBefore(noteElement, el.parentNode.children[1])
+        noteElement.focus();
+        noteElement.value = notes;
+
+        el.id = "show-checkbox";
+        el.title = "Show checkboxes"
+        el.removeEventListener('click', closeCheckbox)
+        el.addEventListener("click", showCheckbox)
+    }
 
     const showCheckbox = e => {
         let checkbox = e.target;
@@ -53,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         inputNoteElement.parentNode.removeChild(inputNoteElement)
         checkbox.id = "hide-checkbox";
+        checkbox.title = "Hide checkboxes"
         checkbox.removeEventListener('click', showCheckbox)
+        checkbox.addEventListener("click", closeCheckbox)
     }
 
     const addNewListEvent = () => {
@@ -79,20 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector(".add-list-item").focus();
             addListItem();
             trackUpdateColorInput();
+            element.querySelector('#hide-checkbox').addEventListener("click", closeCheckbox)
             const submitNote = event => {
-                if(!element.contains(event.target) && document.body.contains(event.target)){
+                if(!element.contains(event.target) && document.body.contains(event.target) || event.target.className === "form-group float-left"){
                     let title = document.querySelector(".input-note-title").value;
+                    let note = document.querySelector(".input-note-text")? document.querySelector(".input-note-text").value : "";
                     let tasks = []
                     element.querySelectorAll(".checkbox-item").forEach(checkbox => {
                         if(checkbox.querySelector(`input[type="text"]`).value.length) tasks.push(checkbox.querySelector(`input[type="text"]`).value)
                     })
-                    if(title.length || tasks.length){
+                    if(title.length || tasks.length || note.length){
                         fetch('/create_note', {
                             method: "POST",
                             headers: {'X-CSRFToken': csrf},
                             body: JSON.stringify({
                                 title: title,
-                                note: "",
+                                note: note,
                                 color: document.querySelector("#select-color-input").value,
                                 tasks: tasks
                             })
@@ -145,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             trackUpdateColorInput();
             element.querySelector("#show-checkbox").addEventListener("click", showCheckbox)
             const submitNote = event => {
-                if(!element.contains(event.target) && document.body.contains(event.target)){
+                if(!element.contains(event.target) && document.body.contains(event.target) || event.target.className === "form-group float-left"){
                     let title = document.querySelector(".input-note-title").value;
                     let note = document.querySelector(".input-note-text")? document.querySelector(".input-note-text").value : "";
                     let tasks = []
