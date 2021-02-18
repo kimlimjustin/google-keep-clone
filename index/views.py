@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import IntegrityError
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.forms.models import model_to_dict
 from .models import User, Notes, Checkbox, Labels
+from django.core import serializers
 import json
 
 # Create your views here.
@@ -92,4 +94,4 @@ def create_note(request):
             task.save()
             note.todos.add(task)
             note.save()
-        return JsonResponse({"message": "Success"})
+        return JsonResponse({"message": "Success", "tasks": serializers.serialize('json', note.todos.all())})

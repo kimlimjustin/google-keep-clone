@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Permanent+Marker");
-@import url("https://fonts.googleapis.com/css?family=Product+Sans");
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 @import url("https://fonts.googleapis.com/css?family=Google+Sans");
 
 body{
@@ -39,7 +39,7 @@ body{
     position: relative;
     vertical-align: middle;
     margin-top: 0.75rem;
-    font-family: "Product Sans";
+    font-family: "Roboto";
     color: #5f6368;
     padding-left: 1rem;
 }
@@ -144,7 +144,7 @@ body{
 .about-site{
     padding: 10px;
     border-top: 1px solid;
-    font-family: "Product Sans";
+    font-family: "Roboto";
 }
 
 .sidenav-title{
@@ -251,6 +251,27 @@ body{
     border-bottom: none !important;
 }
 
+.note-box{
+    width: 250px;
+    float: left;
+    border-radius: 5px;
+    font-family: "Google Sans";
+    color: white;
+}
+
+.note-box-title{
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.note-box-text{
+    font-family: "Roboto";
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+}
+
 @media only screen and (max-width: 600px){
     :root{
         font-size: 14px;
@@ -263,5 +284,8 @@ body{
     }
     .sidenav-link-btn span{
         font-size: 16px;
+    }
+    .note-box{
+        width: -webkit-fill-available;
     }
 }

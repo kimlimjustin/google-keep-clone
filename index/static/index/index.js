@@ -130,7 +130,30 @@ document.addEventListener("DOMContentLoaded", () => {
                         })
                         .then(response => response.json())
                         .then(result =>{
-                            console.log(result)
+                            if(result["message"] === "Success"){
+                                let noteElement = document.createElement('div');
+                                noteElement.setAttribute('class', 'note-box m-2');
+                                noteElement.setAttribute("draggable", 'true')
+                                noteElement.style.backgroundColor = color;
+                                let tasks = "";
+                                if(result["tasks"]){
+                                    JSON.parse(result["tasks"]).forEach(task => {
+                                        tasks += `<div>
+                                            <input type="checkbox" name="${task.pk}" id="${task.pk}">
+                                            <label for="${task.pk}">${task.fields.todo}</label>
+                                        </div>`
+                                    })
+                                }
+                                console.log(tasks)
+                                noteElement.innerHTML = `<div class="box">
+                                <h5 class="note-box-title">${title}</h5>
+                                ${ note.length ?`
+                                <p class="note-box-text">${note}</p>`:`
+                                ${tasks}
+                                `}
+                                </div>`;
+                                document.querySelector(".container").appendChild(noteElement)
+                            }
                         })
                     }
                     let newElement = document.createElement("div");
@@ -180,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     let title = document.querySelector(".input-note-title").value;
                     let note = document.querySelector(".input-note-text")? document.querySelector(".input-note-text").value : "";
                     let tasks = []
+                    let color = document.querySelector("#select-color-input").value
                     element.querySelectorAll(".checkbox-item").forEach(checkbox => {
                         if(checkbox.querySelector(`input[type="text"]`).value.length) tasks.push(checkbox.querySelector(`input[type="text"]`).value)
                     })
@@ -190,13 +214,36 @@ document.addEventListener("DOMContentLoaded", () => {
                             body: JSON.stringify({
                                 title: title,
                                 note: note,
-                                color: document.querySelector("#select-color-input").value,
+                                color: color,
                                 tasks: tasks
                             })
                         })
                         .then(response => response.json())
                         .then(result =>{
-                            console.log(result)
+                            if(result["message"] === "Success"){
+                                let noteElement = document.createElement('div');
+                                noteElement.setAttribute('class', 'note-box m-2');
+                                noteElement.setAttribute("draggable", 'true')
+                                noteElement.style.backgroundColor = color;
+                                let tasks = "";
+                                if(result["tasks"]){
+                                    JSON.parse(result["tasks"]).forEach(task => {
+                                        tasks += `<div>
+                                            <input type="checkbox" name="${task.pk}" id="${task.pk}">
+                                            <label for="${task.pk}">${task.fields.todo}</label>
+                                        </div>`
+                                    })
+                                }
+                                console.log(tasks)
+                                noteElement.innerHTML = `<div class="box">
+                                <h5 class="note-box-title">${title}</h5>
+                                ${ note.length ?`
+                                <p class="note-box-text">${note}</p>`:`
+                                ${tasks}
+                                `}
+                                </div>`;
+                                document.querySelector(".container").appendChild(noteElement)
+                            }
                         })
                     }
                     let newElement = document.createElement("div");
