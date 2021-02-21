@@ -12,24 +12,28 @@
             <img src="{% static 'Icon/todo.png' %}" alt="New list icon" title="New list" id="new-list-btn">
         </div>
     </div>
-    <div>
-        {% for i in notes %}
-        <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true">
-            <div class="box">
-                <h5 class="note-box-title">{{i.title}}</h5>
-                {% if i.note %}
-                <p class="note-box-text">{{i.note}}</p>
-                {% else %}
-                    {% for task in i|get_tasks %}
-                    <div>
-                        <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
-                        <label for="{{task.pk}}">{{task.todo}}</label>
+    <div class="notes">
+        <div class="notes-grid">
+            {% if user.view == "grid" %}
+                {% for i in notes %}
+                <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true">
+                    <div class="box">
+                        <h5 class="note-box-title">{{i.title}}</h5>
+                        {% if i.note %}
+                        <p class="note-box-text">{{i.note}}</p>
+                        {% else %}
+                            {% for task in i|get_tasks %}
+                            <div>
+                                <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
+                                <label for="{{task.pk}}">{{task.todo}}</label>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -252,8 +252,8 @@ body{
 }
 
 .note-box{
-    width: 250px;
-    float: left;
+    width: -webkit-fill-available;
+    display: inline-block;
     border-radius: 5px;
     font-family: "Google Sans";
     color: white;
@@ -272,6 +272,21 @@ body{
     -webkit-box-orient: vertical;
 }
 
+.notes{
+    float: left;
+}
+
+.notes-grid{
+    column-count: 4;
+    column-gap: 1em;
+}
+
+@media only screen and (max-width: 768px){
+    .notes-grid{
+        column-count: 3;
+    }
+}
+
 @media only screen and (max-width: 600px){
     :root{
         font-size: 14px;
@@ -287,5 +302,8 @@ body{
     }
     .note-box{
         width: -webkit-fill-available;
+    }
+    .notes-grid{
+        column-count: 1;
     }
 }
