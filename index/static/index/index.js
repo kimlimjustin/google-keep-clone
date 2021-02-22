@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                         </div>`
                                     })
                                 }
-                                console.log(tasks)
                                 noteElement.innerHTML = `<div class="box">
                                 <h5 class="note-box-title">${title}</h5>
                                 ${ note.length ?`
@@ -235,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                         </div>`
                                     })
                                 }
-                                console.log(tasks)
                                 noteElement.innerHTML = `<div class="box">
                                 <h5 class="note-box-title">${title}</h5>
                                 ${ note.length ?`
