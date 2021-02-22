@@ -281,6 +281,11 @@ body{
     column-gap: 1em;
 }
 
+.list-note-box{
+    margin: 1rem;
+    border-radius: 5px;
+}
+
 @media only screen and (max-width: 768px){
     .notes-grid{
         column-count: 3;

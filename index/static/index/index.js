@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         .then(result =>{
                             if(result["message"] === "Success"){
                                 let noteElement = document.createElement('div');
-                                noteElement.setAttribute('class', 'note-box m-2');
+                                document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
                                 noteElement.setAttribute("draggable", 'true')
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
@@ -152,7 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 ${tasks}
                                 `}
                                 </div>`;
-                                document.querySelector(".container").appendChild(noteElement)
+                                if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
+                                else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
                             }
                         })
                     }
@@ -222,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         .then(result =>{
                             if(result["message"] === "Success"){
                                 let noteElement = document.createElement('div');
-                                noteElement.setAttribute('class', 'note-box m-2');
+                                document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
                                 noteElement.setAttribute("draggable", 'true')
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
@@ -242,7 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 ${tasks}
                                 `}
                                 </div>`;
-                                document.querySelector(".container").appendChild(noteElement)
+                                if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
+                                else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
                             }
                         })
                     }
