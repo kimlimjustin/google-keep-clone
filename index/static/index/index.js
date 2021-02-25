@@ -133,7 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             if(result["message"] === "Success"){
                                 let noteElement = document.createElement('div');
                                 document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
-                                noteElement.setAttribute("draggable", 'true')
+                                noteElement.setAttribute("draggable", 'true');
+                                noteElement.id = `note-${result["pk"]}`;
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
                                 if(result["tasks"]){
@@ -150,9 +151,27 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <p class="note-box-text">${note}</p>`:`
                                 ${tasks}
                                 `}
+                                <div class="note-option">
+                                    <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
+                                </div>
                                 </div>`;
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
+                                document.querySelector(`#note-${result["pk"]}`).addEventListener("click", () => {
+                                    fetch('/delete_note', {
+                                        method: "POST",
+                                        headers: {'X-CSRFToken': csrf},
+                                        body: JSON.stringify({
+                                            "pk": result["pk"]
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(result => {
+                                        if(result["message"] === "Success"){
+                                            noteElement.parentNode.removeChild(noteElement)
+                                        }
+                                    })
+                                })
                             }
                         })
                     }
@@ -223,7 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             if(result["message"] === "Success"){
                                 let noteElement = document.createElement('div');
                                 document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
-                                noteElement.setAttribute("draggable", 'true')
+                                noteElement.setAttribute("draggable", 'true');
+                                noteElement.id = `note-${result["pk"]}`;
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
                                 if(result["tasks"]){
@@ -240,9 +260,27 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <p class="note-box-text">${note}</p>`:`
                                 ${tasks}
                                 `}
+                                <div class="note-option">
+                                    <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
+                                </div>
                                 </div>`;
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
+                                document.querySelector(`#note-${result["pk"]}`).addEventListener("click", () => {
+                                    fetch('/delete_note', {
+                                        method: "POST",
+                                        headers: {'X-CSRFToken': csrf},
+                                        body: JSON.stringify({
+                                            "pk": result["pk"]
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(result => {
+                                        if(result["message"] === "Success"){
+                                            noteElement.parentNode.removeChild(noteElement)
+                                        }
+                                    })
+                                })
                             }
                         })
                     }
@@ -264,4 +302,22 @@ document.addEventListener("DOMContentLoaded", () => {
         passCreateNote = false
     }
     document.querySelector(".create-note-preview").addEventListener("click", createNote)
+    document.querySelectorAll("#delete-note-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            fetch('/delete_note', {
+                method: "POST",
+                headers: {'X-CSRFToken': csrf},
+                body: JSON.stringify({
+                    "pk": btn.dataset.pk
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result["message"] === "Success"){
+                    let noteElement = document.querySelector(`#note-${btn.dataset.pk}`);
+                    noteElement.parentNode.removeChild(noteElement);
+                }
+            })
+        })
+    })
 })

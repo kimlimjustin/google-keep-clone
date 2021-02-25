@@ -281,10 +281,27 @@ body{
     column-gap: 1em;
 }
 
-.list-note-box{
+.notes{
     margin: 1rem;
     border-radius: 5px;
     color: white;
+}
+
+.note-box, .list-note-box{
+    transition: height 1s;
+}
+
+.note-option{
+    visibility: hidden;
+}
+
+.note-option img{
+    width: 1.5rem;
+    cursor: pointer;
+}
+
+.note-box:hover .note-option, .list-note-box:hover .note-option{
+    visibility: visible;
 }
 
 @media only screen and (max-width: 768px){

@@ -16,7 +16,7 @@
         {% if user.view == "grid" %}
             <div class="notes-grid">
                 {% for i in notes %}
-                <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true">
+                <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true"" id="note-{{i.pk}}">
                     <div class="box">
                         <h5 class="note-box-title">{{i.title}}</h5>
                         {% if i.note %}
@@ -29,13 +29,16 @@
                             </div>
                             {% endfor %}
                         {% endif %}
+                        <div class="note-option">
+                            <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
         </div>
         {% elif user.view == "list" %}
             {% for i in notes %}
-            <div class="list-note-box" style="background-color: {{i.color}};" draggable="true">
+            <div class="list-note-box" style="background-color: {{i.color}};" draggable="true" id="note-{{i.pk}}">
                 <div class="box">
                     <h5 class="note-box-title">{{i.title}}</h5>
                     {% if i.note %}
@@ -48,6 +51,9 @@
                         </div>
                         {% endfor %}
                     {% endif %}
+                    <div class="note-option">
+                        <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                    </div>
                 </div>
             </div>
             {% endfor %}

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#view").addEventListener("change", function(){
         let view = this.checked ? "list": "grid"
         let theme = document.querySelector("#darkTheme").checked ? "dark": "light";
-        console.log(theme)
         fetch('/update_setting', {
             method: "POST",
             headers: {'X-CSRFToken': csrf},

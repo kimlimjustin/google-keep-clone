@@ -14,7 +14,7 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
     return render(request, "index/index.html", {
-        "notes": Notes.objects.filter(user = request.user).order_by('-pk')
+        "notes": Notes.objects.filter(user = request.user, deleted = False).order_by('-pk')
     })
 
 def login_view(request):
@@ -94,4 +94,14 @@ def create_note(request):
             task.save()
             note.todos.add(task)
             note.save()
-        return JsonResponse({"message": "Success", "tasks": serializers.serialize('json', note.todos.all())})
+        return JsonResponse({"message": "Success", "tasks": serializers.serialize('json', note.todos.all()), "pk": note.pk})
+
+def delete_note(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.deleted = True
+        note.save()
+        return JsonResponse({"message": "Success"})
