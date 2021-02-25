@@ -281,10 +281,11 @@ body{
     column-gap: 1em;
 }
 
-.notes{
+.notes, .list-note-box{
     margin: 1rem;
     border-radius: 5px;
     color: white;
+    width: -webkit-fill-available;
 }
 
 .note-box, .list-note-box{
@@ -302,6 +303,11 @@ body{
 
 .note-box:hover .note-option, .list-note-box:hover .note-option{
     visibility: visible;
+}
+
+.sidenav-link{
+    color: inherit;
+    text-decoration: none;
 }
 
 @media only screen and (max-width: 768px){

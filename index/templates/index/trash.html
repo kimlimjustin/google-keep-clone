@@ -1,17 +1,11 @@
 {% extends 'index/layout.html' %}
 {% load static %}
-{% load get_tasks %}
 {% block script %}
-<script src="{% static 'index/index.js' %}"></script>
+<script src="{% static 'index/trash.js' %}"></script>
 {% endblock %}
+{% load get_tasks %}
 {% block body %}
 <div class="container">
-    <div class="form-group create-note-preview float-left">
-        <div class="create-note-box">
-            <input type="text" class="create-note-input" placeholder="Take a note...">
-            <img src="{% static 'Icon/todo.png' %}" alt="New list icon" title="New list" id="new-list-btn">
-        </div>
-    </div>
     <div class="notes">
         {% if user.view == "grid" %}
             <div class="notes-grid">
@@ -24,13 +18,14 @@
                         {% else %}
                             {% for task in i|get_tasks %}
                             <div>
-                                <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
+                                <input type="checkbox" name="{{task.id}}" id="{{task.pk}}" onclick="return false;">
                                 <label for="{{task.pk}}">{{task.todo}}</label>
                             </div>
                             {% endfor %}
                         {% endif %}
                         <div class="note-option">
-                            <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                            <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="permanent-delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                            <img src="{% static 'Icon/restore.png' %}" alt="Restore note" id="restore-note-btn" data-pk="{{i.pk}}" title="Restore">
                         </div>
                     </div>
                 </div>
@@ -46,13 +41,14 @@
                     {% else %}
                         {% for task in i|get_tasks %}
                         <div>
-                            <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
+                            <input type="checkbox" name="{{task.id}}" id="{{task.pk}}" onclick="return false;">
                             <label for="{{task.pk}}">{{task.todo}}</label>
                         </div>
                         {% endfor %}
                     {% endif %}
                     <div class="note-option">
-                        <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                        <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="permanent-delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                        <img src="{% static 'Icon/restore.png' %}" alt="Restore note" id="restore-note-btn" data-pk="{{i.pk}}" title="Restore">
                     </div>
                 </div>
             </div>

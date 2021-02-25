@@ -47,10 +47,12 @@
         <div class="sidenav-content">
             <span class="sidenav-close-btn" data-target="options">&times;</span>
             <h1 class="sidenav-title">Google Keep Clone</h1>
-            <div class="sidenav-link-btn">
-                <img src="{% static 'Icon/idea.png' %}" alt="Notes icon">
-                <span>Notes</span>
-            </div>
+            <a href="{% url 'index' %}" class="sidenav-link">
+                <div class="sidenav-link-btn">
+                    <img src="{% static 'Icon/idea.png' %}" alt="Notes icon">
+                    <span>Notes</span>
+                </div>
+            </a>
             <div class="sidenav-link-btn">
                 <img src="{% static 'Icon/edit_label.png' %}" alt="Notes icon">
                 <span>Edit labels</span>
@@ -59,10 +61,12 @@
                 <img src="{% static 'Icon/archive.png' %}" alt="Archive icon">
                 <span>Archive</span>
             </div>
-            <div class="sidenav-link-btn">
-                <img src="{% static 'Icon/trash.png' %}" alt="Trash icon">
-                <span>Trash</span>
-            </div>
+            <a href="{% url 'trash' %}" class="sidenav-link">
+                <div class="sidenav-link-btn">
+                    <img src="{% static 'Icon/trash.png' %}" alt="Trash icon">
+                    <span>Trash</span>
+                </div>
+            </a>
         </div>
         <div class="about-site">
             <p>Google Keep Clone is MIT Licensed. Supports Google Keep Clone by giving a star on <a href="https://github.com/kimlimjustin/google-keep-clone" class="link">GitHub</a></p>

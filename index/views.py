@@ -105,3 +105,27 @@ def delete_note(request):
         note.deleted = True
         note.save()
         return JsonResponse({"message": "Success"})
+
+def restore(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.deleted = False
+        note.save()
+        return JsonResponse({"message": "Success"})
+
+def trash(request):
+    return render(request, "index/trash.html", {
+        "notes": Notes.objects.filter(user = request.user, deleted = True).order_by('-pk')
+    })
+
+def permanently_delete_note(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.delete()
+        return JsonResponse({"message": "Success"})
