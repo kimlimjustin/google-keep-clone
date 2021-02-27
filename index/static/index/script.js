@@ -14,6 +14,62 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
     })
+    const deleteListener = newElement => {
+        newElement.querySelectorAll("#delete-note-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                fetch('/delete_note', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let noteElement = document.querySelector(`#note-${btn.dataset.pk}`);
+                        noteElement.parentNode.removeChild(noteElement);
+                    }
+                })
+            })
+        })
+        newElement.querySelectorAll("#permanent-delete-note-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                fetch('/delete_permanent',{
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let noteElement = document.querySelector(`#note-${btn.dataset.pk}`)
+                        noteElement.parentNode.removeChild(noteElement)
+                    }
+                })
+            })
+        })
+        newElement.querySelectorAll("#restore-note-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                fetch('/restore_note', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let noteElement = document.querySelector(`#note-${btn.dataset.pk}`)
+                        noteElement.parentNode.removeChild(noteElement)
+                    }
+                })
+            })
+        })
+    }
     document.querySelector("#view").addEventListener("change", function(){
         let view = this.checked ? "list": "grid"
         let theme = document.querySelector("#darkTheme").checked ? "dark": "light";
@@ -30,10 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelectorAll(".note-box").forEach(note => {
                     let newElement = document.createElement("div")
                     newElement.innerHTML = note.innerHTML;
+                    newElement.id = note.id;
                     newElement.classList.add('list-note-box');
                     newElement.setAttribute('draggable', true);
                     newElement.style.backgroundColor = note.style.backgroundColor;
                     document.querySelector(".notes").appendChild(newElement);
+                    deleteListener(newElement)
                 })
                 document.querySelector(".notes-grid").parentNode.removeChild(document.querySelector(".notes-grid"))
             }else if(document.querySelectorAll(".list-note-box").length){
@@ -42,12 +100,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector(".notes").appendChild(gridElement);
                 document.querySelectorAll(".list-note-box").forEach(note => {
                     let newElement = document.createElement("div");
+                    newElement.id = note.id;
                     newElement.innerHTML = note.innerHTML;
                     newElement.setAttribute('class', 'note-box m-2')
                     newElement.setAttribute('draggable', true);
                     newElement.style.backgroundColor = note.style.backgroundColor;
                     gridElement.appendChild(newElement);
                     note.parentNode.removeChild(note)
+                    deleteListener(newElement)
                 })
             }
         }
