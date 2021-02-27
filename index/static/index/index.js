@@ -85,6 +85,30 @@ document.addEventListener("DOMContentLoaded", () => {
         checkbox.addEventListener("click", closeCheckbox)
     }
 
+    const taskEventListener = checkboxes => {
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function(){
+                if(this.checked){
+                    fetch('/check_task', {
+                        method: "POST",
+                        headers: {'X-CSRFToken': csrf},
+                        body: JSON.stringify({
+                            "pk": checkbox.dataset.pk
+                        })
+                    })
+                }else{
+                    fetch('/uncheck_task', {
+                        method: "POST",
+                        headers: {'X-CSRFToken': csrf},
+                        body: JSON.stringify({
+                            "pk": checkbox.dataset.pk
+                        })
+                    })
+                }
+            })
+        })
+    }
+
     const addNewListEvent = () => {
         document.querySelector("#new-list-btn").addEventListener("click", () => {
             let element = document.createElement('div');
@@ -113,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if(!element.contains(event.target) && document.body.contains(event.target) || event.target.className === "form-group float-left"){
                     let title = document.querySelector(".input-note-title").value;
                     let note = document.querySelector(".input-note-text")? document.querySelector(".input-note-text").value : "";
+                    let color = document.querySelector("#select-color-input").value
                     let tasks = []
                     element.querySelectorAll(".checkbox-item").forEach(checkbox => {
                         if(checkbox.querySelector(`input[type="text"]`).value.length) tasks.push(checkbox.querySelector(`input[type="text"]`).value)
@@ -124,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             body: JSON.stringify({
                                 title: title,
                                 note: note,
-                                color: document.querySelector("#select-color-input").value,
+                                color: color,
                                 tasks: tasks
                             })
                         })
@@ -140,8 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 if(result["tasks"]){
                                     JSON.parse(result["tasks"]).forEach(task => {
                                         tasks += `<div>
-                                            <input type="checkbox" name="${task.pk}" id="${task.pk}">
-                                            <label for="${task.pk}">${task.fields.todo}</label>
+                                            <input type="checkbox" name="${task.pk}" id="task-${task.pk}" class="task" data-pk="${task.pk}">
+                                            <label for="task-${task.pk}">${task.fields.todo}</label>
                                         </div>`
                                     })
                                 }
@@ -155,9 +180,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
                                 </div>
                                 </div>`;
+                                taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
-                                document.querySelector(`#note-${result["pk"]}`).addEventListener("click", () => {
+                                noteElement.querySelector(`#delete-note-btn`).addEventListener("click", () => {
                                     fetch('/delete_note', {
                                         method: "POST",
                                         headers: {'X-CSRFToken': csrf},
@@ -249,8 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 if(result["tasks"]){
                                     JSON.parse(result["tasks"]).forEach(task => {
                                         tasks += `<div>
-                                            <input type="checkbox" name="${task.pk}" id="${task.pk}">
-                                            <label for="${task.pk}">${task.fields.todo}</label>
+                                            <input type="checkbox" name="${task.pk}" id="task-${task.pk}" class="task" data-pk="${task.pk}">
+                                            <label for="task-${task.pk}">${task.fields.todo}</label>
                                         </div>`
                                     })
                                 }
@@ -264,9 +290,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
                                 </div>
                                 </div>`;
+                                taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
-                                document.querySelector(`#note-${result["pk"]}`).addEventListener("click", () => {
+                                noteElement.querySelector("#delete-note-btn").addEventListener("click", () => {
                                     fetch('/delete_note', {
                                         method: "POST",
                                         headers: {'X-CSRFToken': csrf},
@@ -320,4 +347,5 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
     })
+    taskEventListener(document.querySelectorAll(".task"))
 })

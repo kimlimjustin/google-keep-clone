@@ -11,5 +11,7 @@ urlpatterns = [
     path('delete_note', views.delete_note, name="delete_note"),
     path('restore_note', views.restore, name="restore"),
     path('trash', views.trash, name="trash"),
-    path('delete_permanent', views.permanently_delete_note, name="permanently_delete_note")
+    path('delete_permanent', views.permanently_delete_note, name="permanently_delete_note"),
+    path('check_task', views.check_task, name="check_task"),
+    path('uncheck_task', views.uncheck_task, name="uncheck_task")
 ]

@@ -129,3 +129,23 @@ def permanently_delete_note(request):
         note = Notes.objects.get(pk = data["pk"])
         note.delete()
         return JsonResponse({"message": "Success"})
+
+def check_task(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        checkbox = Checkbox.objects.get(pk = data["pk"])
+        checkbox.done = True
+        checkbox.save()
+        return JsonResponse({"message": "Success"})
+
+def uncheck_task(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        checkbox = Checkbox.objects.get(pk = data["pk"])
+        checkbox.done = False
+        checkbox.save()
+        return JsonResponse({"message": "Success"})

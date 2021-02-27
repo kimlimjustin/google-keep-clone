@@ -24,8 +24,8 @@
                         {% else %}
                             {% for task in i|get_tasks %}
                             <div>
-                                <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
-                                <label for="{{task.pk}}">{{task.todo}}</label>
+                                <input type="checkbox" name="{{task.id}}" id="task-{{task.pk}}" class="task" data-pk = "{{task.pk}}" {% if task.done %}checked{% endif %}>
+                                <label for="task-{{task.pk}}">{{task.todo}}</label>
                             </div>
                             {% endfor %}
                         {% endif %}
@@ -46,8 +46,8 @@
                     {% else %}
                         {% for task in i|get_tasks %}
                         <div>
-                            <input type="checkbox" name="{{task.id}}" id="{{task.pk}}">
-                            <label for="{{task.pk}}">{{task.todo}}</label>
+                            <input type="checkbox" name="{{task.id}}" id="task-{{task.pk}}" class="task" data-pk = "{{task.pk}}" {% if task.done %}checked{% endif %}>
+                            <label for="task-{{task.pk}}">{{task.todo}}</label>
                         </div>
                         {% endfor %}
                     {% endif %}
