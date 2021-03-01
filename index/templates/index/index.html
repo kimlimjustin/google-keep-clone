@@ -16,7 +16,7 @@
         {% if user.view == "grid" %}
             <div class="notes-grid">
                 {% for i in notes %}
-                <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true"" id="note-{{i.pk}}">
+                <div class="note-box m-2" style="background-color: {{i.color}};" draggable="true"" id="note-{{i.pk}}" data-pk="{{i.pk}}">
                     <div class="box">
                         <h5 class="note-box-title">{{i.title}}</h5>
                         {% if i.note %}
@@ -38,7 +38,7 @@
             </div>
         {% elif user.view == "list" %}
             {% for i in notes %}
-            <div class="list-note-box" style="background-color: {{i.color}};" draggable="true" id="note-{{i.pk}}">
+            <div class="list-note-box" style="background-color: {{i.color}};" draggable="true" id="note-{{i.pk}}" data-pk="{{i.pk}}">
                 <div class="box">
                     <h5 class="note-box-title">{{i.title}}</h5>
                     {% if i.note %}
@@ -58,6 +58,18 @@
             </div>
             {% endfor %}
         {% endif %}
+    </div>
+</div>
+<div class="modal" id="edit-note">
+    <div class="modal-content theme-adjust">
+        <span class="modal-close-btn" data-modal="edit-note">&times;</span>
+        <div class="form-group form-animate">
+            <input type="text" id="edit-note-title" class="input-animate" placeholder="Title">
+            <span class="input-onFocus"></span>
+        </div>
+        <div class="form-group" id="edit-note-text">
+
+        </div>
     </div>
 </div>
 {% endblock %}

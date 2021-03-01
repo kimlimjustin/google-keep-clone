@@ -149,3 +149,23 @@ def uncheck_task(request):
         checkbox.done = False
         checkbox.save()
         return JsonResponse({"message": "Success"})
+    
+def update_title(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.title = data["title"]
+        note.save()
+        return JsonResponse({"message": "Success"})
+
+def update_note_text(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.note = data["note"]
+        note.save()
+        return JsonResponse({"message": "Success"})

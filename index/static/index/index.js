@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
                                 noteElement.setAttribute("draggable", 'true');
                                 noteElement.id = `note-${result["pk"]}`;
+                                noteElement.dataset.pk = result["pk"];
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
                                 if(result["tasks"]){
@@ -269,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 let noteElement = document.createElement('div');
                                 document.querySelector(".notes-grid")? noteElement.setAttribute('class', 'note-box m-2'): noteElement.setAttribute("class", "list-note-box")
                                 noteElement.setAttribute("draggable", 'true');
+                                noteElement.dataset.pk = result["pk"];
                                 noteElement.id = `note-${result["pk"]}`;
                                 noteElement.style.backgroundColor = color;
                                 let tasks = "";
@@ -348,4 +350,59 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
     taskEventListener(document.querySelectorAll(".task"))
+    document.querySelectorAll("[draggable=true]").forEach(box => {
+        box.addEventListener("dblclick", () => {
+            let editNoteModal = document.querySelector("#edit-note")
+            editNoteModal.style.display = "block";
+            editNoteModal.querySelector("#edit-note-title").value = box.querySelector(".note-box-title").innerText;
+            const editTitleEventListener = e => {
+                fetch('/update_title', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": box.dataset.pk,
+                        "title": e.target.value
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        box.querySelector(".note-box-title").innerText = e.target.value;
+                    }
+                })
+            }
+            editNoteModal.querySelector("#edit-note-title").addEventListener("input", editTitleEventListener)
+            const editNoteEventListener = e => {
+                fetch('/update_note_text', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": box.dataset.pk,
+                        "note": e.target.value
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        box.querySelector(".note-box-text").innerText = e.target.value
+                    }
+                })
+            }
+            if(box.querySelector(".note-box-text")){
+                let noteTextElement = document.createElement("textarea");
+                noteTextElement.value = box.querySelector(".note-box-text").innerText;
+                noteTextElement.classList.add('input-animate')
+                noteTextElement.style.height = "-webkit-fill-available"
+                noteTextElement.addEventListener("input", editNoteEventListener)
+                editNoteModal.querySelector("#edit-note-text").innerHTML = ""; // Deleting all child elements
+                editNoteModal.querySelector("#edit-note-text").appendChild(noteTextElement);
+            }
+            document.body.addEventListener("click", e => {
+                if(e.target == editNoteModal){ 
+                    editNoteModal.style.display = "none";
+                    editNoteModal.querySelector("#edit-note-title").removeEventListener("input", editTitleEventListener)
+                }
+            })
+        })
+    })
 })

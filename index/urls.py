@@ -13,5 +13,7 @@ urlpatterns = [
     path('trash', views.trash, name="trash"),
     path('delete_permanent', views.permanently_delete_note, name="permanently_delete_note"),
     path('check_task', views.check_task, name="check_task"),
-    path('uncheck_task', views.uncheck_task, name="uncheck_task")
+    path('uncheck_task', views.uncheck_task, name="uncheck_task"),
+    path("update_title", views.update_title, name="update_title"),
+    path('update_note_text', views.update_note_text, name="update_note_text")
 ]

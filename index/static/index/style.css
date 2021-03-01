@@ -310,6 +310,10 @@ body{
     text-decoration: none;
 }
 
+#edit-note-text{
+    height: inherit;
+}
+
 @media only screen and (max-width: 768px){
     .notes-grid{
         column-count: 3;
