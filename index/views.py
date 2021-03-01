@@ -169,3 +169,13 @@ def update_note_text(request):
         note.note = data["note"]
         note.save()
         return JsonResponse({"message": "Success"})
+
+def update_task(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        task = Checkbox.objects.get(pk = data["pk"])
+        task.todo = data["todo"]
+        task.save()
+        return JsonResponse({"message": "Success"})

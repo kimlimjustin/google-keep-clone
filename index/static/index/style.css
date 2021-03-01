@@ -314,6 +314,21 @@ body{
     height: inherit;
 }
 
+.input-task{
+    border: none;
+    display: inline-block;
+    outline: 0;
+    padding: 5px;
+    background-color: transparent;
+    border-bottom: 1px solid #7c7c7c;
+    color: inherit;
+    width: 85%;
+}
+
+.task-label{
+    color: inherit;
+}
+
 @media only screen and (max-width: 768px){
     .notes-grid{
         column-count: 3;

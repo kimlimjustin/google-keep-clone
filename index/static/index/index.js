@@ -395,8 +395,42 @@ document.addEventListener("DOMContentLoaded", () => {
                 noteTextElement.classList.add('input-animate')
                 noteTextElement.style.height = "-webkit-fill-available"
                 noteTextElement.addEventListener("input", editNoteEventListener)
-                editNoteModal.querySelector("#edit-note-text").innerHTML = ""; // Deleting all child elements
-                editNoteModal.querySelector("#edit-note-text").appendChild(noteTextElement);
+                editNoteModal.querySelector("#edit-note-form").innerHTML = ""; // Deleting all child elements
+                editNoteModal.querySelector("#edit-note-form").appendChild(noteTextElement);
+            }else{
+                let editNoteForm = editNoteModal.querySelector("#edit-note-form");
+                editNoteForm.innerHTML = "";
+                box.querySelectorAll(".task").forEach(taskEl => {
+                    let task = box.querySelector(`[for=${taskEl.id}]`).innerText;
+                    editNoteForm.innerHTML += `<div>
+                    <input type = "checkbox" name="${taskEl.name}" id="${taskEl.id}" class="task" data-pk="${taskEl.dataset.pk}" ${taskEl.checked?"checked":""}>
+                    <label for="${taskEl.id}" class="task-label"><input type = "text" class="input-task" value = "${task}"></label>
+                    </div>`
+                    taskEventListener(editNoteForm.querySelectorAll(".task"))
+                    editNoteForm.querySelectorAll(".task").forEach(task => {
+                        task.addEventListener("click", () => {
+                            box.querySelector(`#${task.id}`).checked = task.checked;
+                        })
+                    })
+                    editNoteForm.querySelectorAll(".input-task").forEach(task => {
+                        task.addEventListener("input", () => {
+                            fetch('/update_task', {
+                                method: "POST",
+                                headers: {'X-CSRFToken': csrf},
+                                body: JSON.stringify({
+                                    "pk": taskEl.dataset.pk,
+                                    "todo": task.value
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(result => {
+                                if(result["message"] === "Success"){
+                                    box.querySelector(`[for="${taskEl.id}"]`).innerText = task.value;
+                                }
+                            })
+                        })
+                    })
+                })
             }
             document.body.addEventListener("click", e => {
                 if(e.target == editNoteModal){ 
