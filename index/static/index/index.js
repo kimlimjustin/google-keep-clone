@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         el.parentNode.insertBefore(noteElement, el.parentNode.children[1])
         noteElement.focus();
         noteElement.value = notes;
+        noteElement.style.height = noteElement.scrollHeight + 'px';
 
         el.id = "show-checkbox";
         el.title = "Show checkboxes"
