@@ -16,5 +16,6 @@ urlpatterns = [
     path('uncheck_task', views.uncheck_task, name="uncheck_task"),
     path("update_title", views.update_title, name="update_title"),
     path('update_note_text', views.update_note_text, name="update_note_text"),
-    path('update_task', views.update_task, name="update_task")
+    path('update_task', views.update_task, name="update_task"),
+    path('show_checkbox', views.show_checkbox, name="show_checkbox")
 ]

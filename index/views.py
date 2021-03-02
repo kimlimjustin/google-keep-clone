@@ -179,3 +179,19 @@ def update_task(request):
         task.todo = data["todo"]
         task.save()
         return JsonResponse({"message": "Success"})
+
+def show_checkbox(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        tasks = [task for task in note.note.split('\n') if len(task) > 0]
+        for task in tasks:
+            newTask = Checkbox(todo = task)
+            newTask.save()
+            note.todos.add(newTask)
+            note.save()
+        note.note = ""
+        note.save()
+        return JsonResponse({"message": "Success", "tasks": serializers.serialize('json', note.todos.all())})

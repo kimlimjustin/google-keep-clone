@@ -180,6 +180,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 `}
                                 <div class="note-option">
                                     <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
+                                    ${note.length?
+                                        `<img src="/static/Icon/todo.png" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="${result["pk"]}" title="Show Checkbox">`
+                                        :`<img src="/static/Icon/todo.png" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="${result["pk"]}" title="Hide Checkbox">`
+                                    }
                                 </div>
                                 </div>`;
                                 taskEventListener(noteElement.querySelectorAll(".task"))
@@ -291,6 +295,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 `}
                                 <div class="note-option">
                                     <img src="/static/Icon/trash.png" alt="Delete note" id="delete-note-btn" data-pk="${result["pk"]}" title="Delete">
+                                    ${note.length?
+                                        `<img src="/static/Icon/todo.png" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="${result["pk"]}" title="Show Checkbox">`
+                                        :`<img src="/static/Icon/todo.png" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="${result["pk"]}" title="Hide Checkbox">`
+                                    }
                                 </div>
                                 </div>`;
                                 taskEventListener(noteElement.querySelectorAll(".task"))
@@ -440,4 +448,31 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
     })
+    const showCheckboxEventListener = btns => {
+        btns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                fetch('/show_checkbox', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk,
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let noteTextElement = document.querySelector(`#note-${btn.dataset.pk}`).querySelector(".note-box-text");
+                        JSON.parse(result["tasks"]).forEach(task => {
+                            let taskElement = document.createElement('div');
+                            taskElement.innerHTML = `<input type="checkbox" name="${task.pk}" id="task-${task.pk}" class="task" data-pk="${task.pk}"><label for="task-${task.pk}" ${task.fields.todo?"checked":""}>${task.fields.todo}</label>`
+                            noteTextElement.parentNode.insertBefore(taskElement, noteTextElement)
+                            taskEventListener(taskElement.querySelectorAll(".task"))
+                        })
+                        noteTextElement.parentNode.removeChild(noteTextElement)
+                    }
+                })
+            })
+        })
+    }
+    showCheckboxEventListener(document.querySelectorAll("#show-checkbox-note-btn"))
 })

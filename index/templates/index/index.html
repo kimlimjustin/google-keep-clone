@@ -20,7 +20,7 @@
                     <div class="box">
                         <h5 class="note-box-title">{{i.title}}</h5>
                         {% if i.note %}
-                        <p class="note-box-text">{{i.note}}</p>
+                        <p class="note-box-text">{{i.note|linebreaksbr|urlize}}</p>
                         {% else %}
                             {% for task in i|get_tasks %}
                             <div>
@@ -31,6 +31,11 @@
                         {% endif %}
                         <div class="note-option">
                             <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                            {% if i.note %}
+                            <img src="{% static 'Icon/todo.png' %}" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="{{i.pk}}" title="Show Checkbox">
+                            {% else %}
+                            <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -53,6 +58,11 @@
                     {% endif %}
                     <div class="note-option">
                         <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
+                        {% if i.note %}
+                        <img src="{% static 'Icon/todo.png' %}" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="{{i.pk}}" title="Show Checkbox">
+                        {% else %}
+                        <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
+                        {% endif %}
                     </div>
                 </div>
             </div>
