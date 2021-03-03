@@ -329,6 +329,13 @@ body{
     color: inherit;
 }
 
+.delete-task-modal{
+    position: absolute;
+    font-size: 1.5rem;
+    cursor: pointer;
+    right: 20px;
+}
+
 @media only screen and (max-width: 768px){
     .notes-grid{
         column-count: 3;

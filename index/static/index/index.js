@@ -413,29 +413,50 @@ document.addEventListener("DOMContentLoaded", () => {
                     editNoteForm.innerHTML += `<div>
                     <input type = "checkbox" name="${taskEl.name}" id="${taskEl.id}" class="task" data-pk="${taskEl.dataset.pk}" ${taskEl.checked?"checked":""}>
                     <label for="${taskEl.id}" class="task-label"><input type = "text" class="input-task" value = "${task}"></label>
+                    <span class="delete-task-modal" title="delete element" data-pk ="${taskEl.dataset.pk}">&times;</span>
                     </div>`
-                    taskEventListener(editNoteForm.querySelectorAll(".task"))
-                    editNoteForm.querySelectorAll(".task").forEach(task => {
-                        task.addEventListener("click", () => {
-                            box.querySelector(`#${task.id}`).checked = task.checked;
+                })
+                editNoteForm.innerHTML += `<input type="text" class="input-animate add-list-item" placeholder="Add new item">`
+                editNoteForm.querySelectorAll(".delete-task-modal").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        fetch('/delete_task', {
+                            method: "POST",
+                            headers: {'X-CSRFToken': csrf},
+                            body: JSON.stringify({
+                                "pk": btn.dataset.pk
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if(result["message"] === "Success"){
+                                document.querySelectorAll(`[name="${btn.dataset.pk}"]`).forEach(task => {
+                                    task.parentNode.parentNode.removeChild(task.parentNode)
+                                })
+                            }
                         })
                     })
-                    editNoteForm.querySelectorAll(".input-task").forEach(task => {
-                        task.addEventListener("input", () => {
-                            fetch('/update_task', {
-                                method: "POST",
-                                headers: {'X-CSRFToken': csrf},
-                                body: JSON.stringify({
-                                    "pk": taskEl.dataset.pk,
-                                    "todo": task.value
-                                })
+                })
+                taskEventListener(editNoteForm.querySelectorAll(".task"))
+                editNoteForm.querySelectorAll(".task").forEach(task => {
+                    task.addEventListener("click", () => {
+                        box.querySelector(`#${task.id}`).checked = task.checked;
+                    })
+                })
+                editNoteForm.querySelectorAll(".input-task").forEach(task => {
+                    task.addEventListener("input", () => {
+                        fetch('/update_task', {
+                            method: "POST",
+                            headers: {'X-CSRFToken': csrf},
+                            body: JSON.stringify({
+                                "pk": taskEl.dataset.pk,
+                                "todo": task.value
                             })
-                            .then(response => response.json())
-                            .then(result => {
-                                if(result["message"] === "Success"){
-                                    box.querySelector(`[for="${taskEl.id}"]`).innerText = task.value;
-                                }
-                            })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if(result["message"] === "Success"){
+                                box.querySelector(`[for="${taskEl.id}"]`).innerText = task.value;
+                            }
                         })
                     })
                 })

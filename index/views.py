@@ -180,6 +180,15 @@ def update_task(request):
         task.save()
         return JsonResponse({"message": "Success"})
 
+def delete_task(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        task = Checkbox.objects.get(pk = data["pk"])
+        task.delete()
+        return JsonResponse({"message": "Success"})
+
 def show_checkbox(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
