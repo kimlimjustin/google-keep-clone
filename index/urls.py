@@ -18,5 +18,6 @@ urlpatterns = [
     path('update_note_text', views.update_note_text, name="update_note_text"),
     path('update_task', views.update_task, name="update_task"),
     path('delete_task', views.delete_task, name="delete_task"),
+    path('create_task', views.create_task, name="create_task"),
     path('show_checkbox', views.show_checkbox, name="show_checkbox")
 ]

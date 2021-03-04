@@ -189,6 +189,18 @@ def delete_task(request):
         task.delete()
         return JsonResponse({"message": "Success"})
 
+def create_task(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        task = Checkbox(todo = data["item"])
+        task.save()
+        note = Notes.objects.get(pk = data["pk"])
+        note.todos.add(task)
+        note.save()
+        return JsonResponse({"message": "Success", "pk": task.pk})
+
 def show_checkbox(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
