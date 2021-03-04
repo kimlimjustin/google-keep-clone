@@ -438,6 +438,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                 editNoteForm.insertBefore(newTask, editNoteForm.lastChild)
                                 newTask.querySelector(".input-task").focus()
                                 newTask.querySelector('.input-task').value = e.key;
+                                let newCheckbox = document.createElement("div");
+                                newCheckbox.innerHTML = `<input type="checkbox" name="${result["pk"]}" id="task-${result["pk"]}" class="task" data-pk="${result["pk"]}">
+                                <label for="task-${result["pk"]}">${e.key}</label>`;
+                                taskEventListener(newCheckbox.querySelectorAll(".task"));
+                                let tasksBox = document.querySelector(`#note-${box.dataset.pk}`).querySelector(".box")
+                                tasksBox.insertBefore(newCheckbox, tasksBox.lastElementChild)
                                 taskModalEvent()
                             }
                         })
