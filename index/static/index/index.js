@@ -506,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     const showCheckboxEventListener = btns => {
         btns.forEach(btn => {
-            btn.addEventListener("click", () => {
+            const showCheckboxClickHandle = () => {
                 fetch('/show_checkbox', {
                     method: "POST",
                     headers: {'X-CSRFToken': csrf},
@@ -525,14 +525,19 @@ document.addEventListener("DOMContentLoaded", () => {
                             taskEventListener(taskElement.querySelectorAll(".task"))
                         })
                         noteTextElement.parentNode.removeChild(noteTextElement)
+                        btn.removeEventListener('click', showCheckboxClickHandle)
+                        btn.id = "hide-checkbox-note-btn";
+                        btn.setAttribute('title', 'Hide Checkbox')
+                        hideCheckboxEventListener([btn])
                     }
                 })
-            })
+            }
+            btn.addEventListener("click", showCheckboxClickHandle)
         })
     }
     const hideCheckboxEventListener = btns => {
         btns.forEach(btn => {
-            btn.addEventListener("click", () => {
+            const hideCheckboxClickHandle = () => {
                 let tasks = [];
                 document.querySelector(`#note-${btn.dataset.pk}`).querySelectorAll("label").forEach(task => tasks.push(task.innerText))
                 fetch('/hide_checkbox', {
@@ -553,10 +558,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         noteTextElement.classList.add('note-box-text');
                         noteTextElement.innerText = result["note"];
                         noteBox.insertBefore(noteTextElement, noteBox.lastElementChild)
-
+                        btn.removeEventListener('click', hideCheckboxClickHandle)
+                        btn.id = "show-checkbox-note-btn";
+                        btn.setAttribute('title', 'Show Checkbox')
+                        showCheckboxEventListener([btn])
                     }
                 })
-            })
+            }
+            btn.addEventListener("click", hideCheckboxClickHandle)
         })
     }
     showCheckboxEventListener(document.querySelectorAll("#show-checkbox-note-btn"))
