@@ -530,5 +530,35 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
     }
+    const hideCheckboxEventListener = btns => {
+        btns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                let tasks = [];
+                document.querySelector(`#note-${btn.dataset.pk}`).querySelectorAll("label").forEach(task => tasks.push(task.innerText))
+                fetch('/hide_checkbox', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk,
+                        "tasks": tasks
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let tasksElements = document.querySelector(`#note-${btn.dataset.pk}`).querySelectorAll("label")
+                        tasksElements.forEach(task => task.parentNode.parentNode.removeChild(task.parentNode))
+                        let noteBox = document.querySelector(`#note-${btn.dataset.pk}`).querySelector(".box");
+                        let noteTextElement = document.createElement('p');
+                        noteTextElement.classList.add('note-box-text');
+                        noteTextElement.innerText = result["note"];
+                        noteBox.insertBefore(noteTextElement, noteBox.lastElementChild)
+
+                    }
+                })
+            })
+        })
+    }
     showCheckboxEventListener(document.querySelectorAll("#show-checkbox-note-btn"))
+    hideCheckboxEventListener(document.querySelectorAll("#hide-checkbox-note-btn"))
 })

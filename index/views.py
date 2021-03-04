@@ -216,3 +216,16 @@ def show_checkbox(request):
         note.note = ""
         note.save()
         return JsonResponse({"message": "Success", "tasks": serializers.serialize('json', note.todos.all())})
+
+def hide_checkbox(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        tasks = data["tasks"]
+        note = Notes.objects.get(pk = data["pk"])
+        for todo in note.todos.all():
+            todo.delete()
+        note.note = '\n'.join(tasks)
+        note.save()
+        return JsonResponse({"message": "Success", "note": note.note})
