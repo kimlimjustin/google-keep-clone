@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
+                                editNoteModalEventListener([noteElement])
                                 noteElement.querySelector(`#delete-note-btn`).addEventListener("click", () => {
                                     fetch('/delete_note', {
                                         method: "POST",
@@ -312,6 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
+                                editNoteModalEventListener([noteElement])
                                 noteElement.querySelector("#delete-note-btn").addEventListener("click", () => {
                                     fetch('/delete_note', {
                                         method: "POST",
@@ -367,151 +369,154 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
     taskEventListener(document.querySelectorAll(".task"))
-    document.querySelectorAll("[draggable=true]").forEach(box => {
-        box.addEventListener("dblclick", () => {
-            let editNoteModal = document.querySelector("#edit-note")
-            editNoteModal.style.display = "block";
-            editNoteModal.querySelector("#edit-note-title").value = box.querySelector(".note-box-title").innerText;
-            const editTitleEventListener = e => {
-                fetch('/update_title', {
-                    method: "POST",
-                    headers: {'X-CSRFToken': csrf},
-                    body: JSON.stringify({
-                        "pk": box.dataset.pk,
-                        "title": e.target.value
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if(result["message"] === "Success"){
-                        box.querySelector(".note-box-title").innerText = e.target.value;
-                    }
-                })
-            }
-            editNoteModal.querySelector("#edit-note-title").addEventListener("input", editTitleEventListener)
-            const editNoteEventListener = e => {
-                fetch('/update_note_text', {
-                    method: "POST",
-                    headers: {'X-CSRFToken': csrf},
-                    body: JSON.stringify({
-                        "pk": box.dataset.pk,
-                        "note": e.target.value
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if(result["message"] === "Success"){
-                        box.querySelector(".note-box-text").innerText = e.target.value
-                    }
-                })
-            }
-            if(box.querySelector(".note-box-text")){
-                let noteTextElement = document.createElement("textarea");
-                noteTextElement.value = box.querySelector(".note-box-text").innerText;
-                noteTextElement.classList.add('input-animate')
-                noteTextElement.style.height = "-webkit-fill-available"
-                noteTextElement.addEventListener("input", editNoteEventListener)
-                editNoteModal.querySelector("#edit-note-form").innerHTML = ""; // Deleting all child elements
-                editNoteModal.querySelector("#edit-note-form").appendChild(noteTextElement);
-            }else{
-                let editNoteForm = editNoteModal.querySelector("#edit-note-form");
-                editNoteForm.innerHTML = "";
-                box.querySelectorAll(".task").forEach(taskEl => {
-                    let task = box.querySelector(`[for=${taskEl.id}]`).innerText;
-                    editNoteForm.innerHTML += `<div>
-                    <input type = "checkbox" name="${taskEl.name}" id="${taskEl.id}" class="task" data-pk="${taskEl.dataset.pk}" ${taskEl.checked?"checked":""}>
-                    <label for="${taskEl.id}" class="task-label"><input type = "text" class="input-task" value = "${task}" data-pk="${taskEl.dataset.pk}"></label>
-                    <span class="delete-task-modal" title="delete element" data-pk ="${taskEl.dataset.pk}">&times;</span>
-                    </div>`
-                })
-                editNoteForm.innerHTML += `<input type="text" class="input-animate add-list-item" placeholder="Add new item" data-pk = "${box.dataset.pk}">`;
-                editNoteForm.querySelector(".add-list-item").addEventListener('keydown', e => {
-                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 64 && e.keyCode < 91) || (e.keyCode > 95 && e.keyCode < 112) || (e.keyCode > 185 && e.keyCode < 193)){
-                        e.preventDefault();
-                        fetch('/create_task', {
-                            method: "POST",
-                            headers: {'X-CSRFToken': csrf},
-                            body: JSON.stringify({
-                                "pk": box.dataset.pk,
-                                "item": e.key
-                            })
+    const editNoteModalEventListener = boxes => {
+        boxes.forEach(box => {
+            box.addEventListener("dblclick", () => {
+                let editNoteModal = document.querySelector("#edit-note")
+                editNoteModal.style.display = "block";
+                editNoteModal.querySelector("#edit-note-title").value = box.querySelector(".note-box-title").innerText;
+                const editTitleEventListener = e => {
+                    fetch('/update_title', {
+                        method: "POST",
+                        headers: {'X-CSRFToken': csrf},
+                        body: JSON.stringify({
+                            "pk": box.dataset.pk,
+                            "title": e.target.value
                         })
-                        .then(response => response.json())
-                        .then(result => {
-                            if(result["message"] === "Success"){
-                                let newTask = document.createElement('div');
-                                newTask.innerHTML = `<input type="checkbox" name="${result["pk"]}" id="task-${result["pk"]}" class="task" data-pk="${result["pk"]}">
-                                <label for = "task-${result["pk"]}"><input type="text" class="input-task" data-pk="${result["pk"]}"></label>
-                                <span class="delete-task-modal" title="delete element" data-pk="${result["pk"]}">&times;</span>`
-                                editNoteForm.insertBefore(newTask, editNoteForm.lastChild)
-                                newTask.querySelector(".input-task").focus()
-                                newTask.querySelector('.input-task').value = e.key;
-                                let newCheckbox = document.createElement("div");
-                                newCheckbox.innerHTML = `<input type="checkbox" name="${result["pk"]}" id="task-${result["pk"]}" class="task" data-pk="${result["pk"]}">
-                                <label for="task-${result["pk"]}">${e.key}</label>`;
-                                taskEventListener(newCheckbox.querySelectorAll(".task"));
-                                let tasksBox = document.querySelector(`#note-${box.dataset.pk}`).querySelector(".box")
-                                tasksBox.insertBefore(newCheckbox, tasksBox.lastElementChild)
-                                taskModalEvent()
-                            }
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result["message"] === "Success"){
+                            box.querySelector(".note-box-title").innerText = e.target.value;
+                        }
+                    })
+                }
+                editNoteModal.querySelector("#edit-note-title").addEventListener("input", editTitleEventListener)
+                const editNoteEventListener = e => {
+                    fetch('/update_note_text', {
+                        method: "POST",
+                        headers: {'X-CSRFToken': csrf},
+                        body: JSON.stringify({
+                            "pk": box.dataset.pk,
+                            "note": e.target.value
                         })
-                    }
-                })
-                const taskModalEvent = () => {
-                    editNoteForm.querySelectorAll(".delete-task-modal").forEach(btn => {
-                        btn.addEventListener("click", () => {
-                            fetch('/delete_task', {
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result["message"] === "Success"){
+                            box.querySelector(".note-box-text").innerText = e.target.value
+                        }
+                    })
+                }
+                if(box.querySelector(".note-box-text")){
+                    let noteTextElement = document.createElement("textarea");
+                    noteTextElement.value = box.querySelector(".note-box-text").innerText;
+                    noteTextElement.classList.add('input-animate')
+                    noteTextElement.style.height = "-webkit-fill-available"
+                    noteTextElement.addEventListener("input", editNoteEventListener)
+                    editNoteModal.querySelector("#edit-note-form").innerHTML = ""; // Deleting all child elements
+                    editNoteModal.querySelector("#edit-note-form").appendChild(noteTextElement);
+                }else{
+                    let editNoteForm = editNoteModal.querySelector("#edit-note-form");
+                    editNoteForm.innerHTML = "";
+                    box.querySelectorAll(".task").forEach(taskEl => {
+                        let task = box.querySelector(`[for=${taskEl.id}]`).innerText;
+                        editNoteForm.innerHTML += `<div>
+                        <input type = "checkbox" name="${taskEl.name}" id="${taskEl.id}" class="task" data-pk="${taskEl.dataset.pk}" ${taskEl.checked?"checked":""}>
+                        <label for="${taskEl.id}" class="task-label"><input type = "text" class="input-task" value = "${task}" data-pk="${taskEl.dataset.pk}"></label>
+                        <span class="delete-task-modal" title="delete element" data-pk ="${taskEl.dataset.pk}">&times;</span>
+                        </div>`
+                    })
+                    editNoteForm.innerHTML += `<input type="text" class="input-animate add-list-item" placeholder="Add new item" data-pk = "${box.dataset.pk}">`;
+                    editNoteForm.querySelector(".add-list-item").addEventListener('keydown', e => {
+                        if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 64 && e.keyCode < 91) || (e.keyCode > 95 && e.keyCode < 112) || (e.keyCode > 185 && e.keyCode < 193)){
+                            e.preventDefault();
+                            fetch('/create_task', {
                                 method: "POST",
                                 headers: {'X-CSRFToken': csrf},
                                 body: JSON.stringify({
-                                    "pk": btn.dataset.pk
+                                    "pk": box.dataset.pk,
+                                    "item": e.key
                                 })
                             })
                             .then(response => response.json())
                             .then(result => {
                                 if(result["message"] === "Success"){
-                                    document.querySelectorAll(`[name="${btn.dataset.pk}"]`).forEach(task => {
-                                        task.parentNode.parentNode.removeChild(task.parentNode)
+                                    let newTask = document.createElement('div');
+                                    newTask.innerHTML = `<input type="checkbox" name="${result["pk"]}" id="task-${result["pk"]}" class="task" data-pk="${result["pk"]}">
+                                    <label for = "task-${result["pk"]}"><input type="text" class="input-task" data-pk="${result["pk"]}"></label>
+                                    <span class="delete-task-modal" title="delete element" data-pk="${result["pk"]}">&times;</span>`
+                                    editNoteForm.insertBefore(newTask, editNoteForm.lastChild)
+                                    newTask.querySelector(".input-task").focus()
+                                    newTask.querySelector('.input-task').value = e.key;
+                                    let newCheckbox = document.createElement("div");
+                                    newCheckbox.innerHTML = `<input type="checkbox" name="${result["pk"]}" id="task-${result["pk"]}" class="task" data-pk="${result["pk"]}">
+                                    <label for="task-${result["pk"]}">${e.key}</label>`;
+                                    taskEventListener(newCheckbox.querySelectorAll(".task"));
+                                    let tasksBox = document.querySelector(`#note-${box.dataset.pk}`).querySelector(".box")
+                                    tasksBox.insertBefore(newCheckbox, tasksBox.lastElementChild)
+                                    taskModalEvent()
+                                }
+                            })
+                        }
+                    })
+                    const taskModalEvent = () => {
+                        editNoteForm.querySelectorAll(".delete-task-modal").forEach(btn => {
+                            btn.addEventListener("click", () => {
+                                fetch('/delete_task', {
+                                    method: "POST",
+                                    headers: {'X-CSRFToken': csrf},
+                                    body: JSON.stringify({
+                                        "pk": btn.dataset.pk
                                     })
-                                }
-                            })
-                        })
-                    })
-                    taskEventListener(editNoteForm.querySelectorAll(".task"))
-                    editNoteForm.querySelectorAll(".task").forEach(task => {
-                        task.addEventListener("click", () => {
-                            box.querySelector(`#${task.id}`).checked = task.checked;
-                        })
-                    })
-                    editNoteForm.querySelectorAll(".input-task").forEach(task => {
-                        task.addEventListener("input", () => {
-                            fetch('/update_task', {
-                                method: "POST",
-                                headers: {'X-CSRFToken': csrf},
-                                body: JSON.stringify({
-                                    "pk": task.dataset.pk,
-                                    "todo": task.value
+                                })
+                                .then(response => response.json())
+                                .then(result => {
+                                    if(result["message"] === "Success"){
+                                        document.querySelectorAll(`[name="${btn.dataset.pk}"]`).forEach(task => {
+                                            task.parentNode.parentNode.removeChild(task.parentNode)
+                                        })
+                                    }
                                 })
                             })
-                            .then(response => response.json())
-                            .then(result => {
-                                if(result["message"] === "Success"){
-                                    box.querySelector(`[for="task-${task.dataset.pk}"]`).innerText = task.value;
-                                }
+                        })
+                        taskEventListener(editNoteForm.querySelectorAll(".task"))
+                        editNoteForm.querySelectorAll(".task").forEach(task => {
+                            task.addEventListener("click", () => {
+                                box.querySelector(`#${task.id}`).checked = task.checked;
                             })
                         })
-                    })
+                        editNoteForm.querySelectorAll(".input-task").forEach(task => {
+                            task.addEventListener("input", () => {
+                                fetch('/update_task', {
+                                    method: "POST",
+                                    headers: {'X-CSRFToken': csrf},
+                                    body: JSON.stringify({
+                                        "pk": task.dataset.pk,
+                                        "todo": task.value
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(result => {
+                                    if(result["message"] === "Success"){
+                                        box.querySelector(`[for="task-${task.dataset.pk}"]`).innerText = task.value;
+                                    }
+                                })
+                            })
+                        })
+                    }
+                    taskModalEvent()
                 }
-                taskModalEvent()
-            }
-            document.body.addEventListener("click", e => {
-                if(e.target == editNoteModal){ 
-                    editNoteModal.style.display = "none";
-                    editNoteModal.querySelector("#edit-note-title").removeEventListener("input", editTitleEventListener)
-                }
+                document.body.addEventListener("click", e => {
+                    if(e.target == editNoteModal){ 
+                        editNoteModal.style.display = "none";
+                        editNoteModal.querySelector("#edit-note-title").removeEventListener("input", editTitleEventListener)
+                    }
+                })
             })
         })
-    })
+    }
+    editNoteModalEventListener(document.querySelectorAll("[draggable=true]"))
     const showCheckboxEventListener = btns => {
         btns.forEach(btn => {
             const showCheckboxClickHandle = () => {
