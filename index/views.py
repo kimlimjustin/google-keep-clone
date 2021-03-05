@@ -242,7 +242,7 @@ def archive(request):
         note.save()
         return JsonResponse({"message": "Success"})
     return render(request, "index/archive.html", {
-        "notes": Notes.objects.filter(user = request.user, archived= True).order_by('-pk')
+        "notes": Notes.objects.filter(user = request.user, archived= True, deleted = False).order_by('-pk')
     })
 
 def unarchive(request):

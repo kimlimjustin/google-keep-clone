@@ -17,7 +17,9 @@
     <div class="top-nav nav-effect">
         <div class="nav-padding">
             <span class="nav-ham sidenav-menu-btn" id="nav-ham" data-target="options">&#9776;</span>
-            <img src = "{% static 'Icon/logo.png' %}" alt = "Google Forms Icon(CLONE)" class="keep-icon" title = "Keep">
+            <a href="{% url 'index' %}">
+                <img src = "{% static 'Icon/logo.png' %}" alt = "Google Forms Icon(CLONE)" class="keep-icon" title = "Keep">
+            </a>
             <span class="nav-text" title = "Forms"><a href = "{% url 'index' %}" class="link keep-link">Keep CLONE</a></span>
             <a href="{% url 'logout' %}">
                 <img src = "{% static 'Icon/Logout.png' %}" alt = "Logout Icon" class="navbar-icon float-right" title = "Logout">

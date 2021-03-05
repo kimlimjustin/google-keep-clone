@@ -1,6 +1,9 @@
 {% extends 'index/layout.html' %}
 {% load static %}
 {% load get_tasks %}
+{% block script %}
+<script src="{% static 'index/archive.js' %}"></script>
+{% endblock %}
 {% block body %}
 <div class="container">
     <div class="notes">
@@ -22,12 +25,7 @@
                         {% endif %}
                         <div class="note-option">
                             <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
-                            {% if i.note %}
-                            <img src="{% static 'Icon/todo.png' %}" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="{{i.pk}}" title="Show Checkbox">
-                            {% else %}
-                            <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
-                            {% endif %}
-                            <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
+                            <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="unarchive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
                         </div>
                     </div>
                 </div>
@@ -50,12 +48,7 @@
                     {% endif %}
                     <div class="note-option">
                         <img src="{% static 'Icon/trash.png' %}" alt="Delete note" id="delete-note-btn" data-pk="{{i.pk}}" title="Delete">
-                        {% if i.note %}
-                        <img src="{% static 'Icon/todo.png' %}" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="{{i.pk}}" title="Show Checkbox">
-                        {% else %}
-                        <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
-                        {% endif %}
-                        <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
+                        <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="unarchive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
                     </div>
                 </div>
             </div>
