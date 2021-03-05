@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         `<img src="/static/Icon/todo.png" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="${result["pk"]}" title="Show Checkbox">`
                                         :`<img src="/static/Icon/todo.png" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="${result["pk"]}" title="Hide Checkbox">`
                                     }
+                                    <img src="/static/Icon/archive.png" alt="Archive" id="archive-note-btn" data-pk="${result["pk"]}" title="Archive">
                                 </div>
                                 </div>`;
                                 showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
@@ -301,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         `<img src="/static/Icon/todo.png" alt = "Show checkbox" id="show-checkbox-note-btn" data-pk="${result["pk"]}" title="Show Checkbox">`
                                         :`<img src="/static/Icon/todo.png" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="${result["pk"]}" title="Hide Checkbox">`
                                     }
+                                    <img src="/static/Icon/archive.png" alt="Archive" id="archive-note-btn" data-pk="${result["pk"]}" title="Archive">
                                 </div>
                                 </div>`;
                                 showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
@@ -574,4 +576,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     showCheckboxEventListener(document.querySelectorAll("#show-checkbox-note-btn"))
     hideCheckboxEventListener(document.querySelectorAll("#hide-checkbox-note-btn"))
+    const archiveNoteEventListener = btns => {
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                fetch('/archive', {
+                    method: "POST",
+                    headers: {'X-CSRFToken': csrf},
+                    body: JSON.stringify({
+                        "pk": btn.dataset.pk
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if(result["message"] === "Success"){
+                        let noteElement = document.querySelector(`#note-${btn.dataset.pk}`)
+                        noteElement.parentNode.removeChild(noteElement)
+                    }
+                })
+            })
+        })
+    }
+    archiveNoteEventListener(document.querySelectorAll("#archive-note-btn"))
 })

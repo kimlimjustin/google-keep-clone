@@ -20,5 +20,7 @@ urlpatterns = [
     path('delete_task', views.delete_task, name="delete_task"),
     path('create_task', views.create_task, name="create_task"),
     path('show_checkbox', views.show_checkbox, name="show_checkbox"),
-    path('hide_checkbox', views.hide_checkbox, name="hide_checkbox")
+    path('hide_checkbox', views.hide_checkbox, name="hide_checkbox"),
+    path('archive', views.archive, name="archive"),
+    path('unarchive', views.unarchive, name="unarchive")
 ]

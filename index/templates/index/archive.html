@@ -1,17 +1,8 @@
 {% extends 'index/layout.html' %}
 {% load static %}
 {% load get_tasks %}
-{% block script %}
-<script src="{% static 'index/index.js' %}"></script>
-{% endblock %}
 {% block body %}
 <div class="container">
-    <div class="form-group create-note-preview float-left">
-        <div class="create-note-box">
-            <input type="text" class="create-note-input" placeholder="Take a note...">
-            <img src="{% static 'Icon/todo.png' %}" alt="New list icon" title="New list" id="new-list-btn">
-        </div>
-    </div>
     <div class="notes">
         {% if user.view == "grid" %}
             <div class="notes-grid">
@@ -36,7 +27,7 @@
                             {% else %}
                             <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
                             {% endif %}
-                            <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Archive">
+                            <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
                         </div>
                     </div>
                 </div>
@@ -64,24 +55,12 @@
                         {% else %}
                         <img src="{% static 'Icon/todo.png' %}" alt = "Hide checkbox" id="hide-checkbox-note-btn" data-pk="{{i.pk}}" title="Hide Checkbox">
                         {% endif %}
-                        <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Archive">
+                        <img src="{% static 'Icon/archive.png' %}" alt="Archive" id="archive-note-btn" data-pk="{{i.pk}}" title="Unarchive">
                     </div>
                 </div>
             </div>
             {% endfor %}
         {% endif %}
-    </div>
-</div>
-<div class="modal" id="edit-note">
-    <div class="modal-content theme-adjust">
-        <span class="modal-close-btn" data-modal="edit-note">&times;</span>
-        <div class="form-group form-animate">
-            <input type="text" id="edit-note-title" class="input-animate" placeholder="Title">
-            <span class="input-onFocus"></span>
-        </div>
-        <div class="form-group" id="edit-note-form">
-
-        </div>
     </div>
 </div>
 {% endblock %}

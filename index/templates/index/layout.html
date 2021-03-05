@@ -57,10 +57,12 @@
                 <img src="{% static 'Icon/edit_label.png' %}" alt="Notes icon">
                 <span>Edit labels</span>
             </div>
-            <div class="sidenav-link-btn">
-                <img src="{% static 'Icon/archive.png' %}" alt="Archive icon">
-                <span>Archive</span>
-            </div>
+            <a href="{% url 'archive' %}" class="sidenav-link">
+                <div class="sidenav-link-btn">
+                    <img src="{% static 'Icon/archive.png' %}" alt="Archive icon">
+                    <span>Archive</span>
+                </div>
+            </a>
             <a href="{% url 'trash' %}" class="sidenav-link">
                 <div class="sidenav-link-btn">
                     <img src="{% static 'Icon/trash.png' %}" alt="Trash icon">

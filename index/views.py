@@ -14,7 +14,7 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
     return render(request, "index/index.html", {
-        "notes": Notes.objects.filter(user = request.user, deleted = False).order_by('-pk')
+        "notes": Notes.objects.filter(user = request.user, deleted = False, archived= False).order_by('-pk')
     })
 
 def login_view(request):
@@ -117,6 +117,8 @@ def restore(request):
         return JsonResponse({"message": "Success"})
 
 def trash(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
     return render(request, "index/trash.html", {
         "notes": Notes.objects.filter(user = request.user, deleted = True).order_by('-pk')
     })
@@ -229,3 +231,26 @@ def hide_checkbox(request):
         note.note = '\n'.join(tasks)
         note.save()
         return JsonResponse({"message": "Success", "note": note.note})
+
+def archive(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.archived = True
+        note.save()
+        return JsonResponse({"message": "Success"})
+    return render(request, "index/archive.html", {
+        "notes": Notes.objects.filter(user = request.user, archived= True).order_by('-pk')
+    })
+
+def unarchive(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        note = Notes.objects.get(pk = data["pk"])
+        note.archived = False
+        note.save()
+        return JsonResponse({'message': "Success"})
