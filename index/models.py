@@ -19,7 +19,3 @@ class Notes(models.Model):
     deleted = models.BooleanField(default = False)
     color = models.CharField(max_length= 10, default="#202124")
     todos = models.ManyToManyField(Checkbox, related_name = "todos")
-
-class Labels(models.Model):
-    label = models.CharField(max_length = 100)
-    labeled = models.ManyToManyField(Notes, related_name  = "labeled")

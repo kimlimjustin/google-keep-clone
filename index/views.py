@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
-from .models import User, Notes, Checkbox, Labels
+from .models import User, Notes, Checkbox
 from django.core import serializers
 import json
 

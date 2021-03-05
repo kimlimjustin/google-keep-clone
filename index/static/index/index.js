@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <img src="/static/Icon/archive.png" alt="Archive" id="archive-note-btn" data-pk="${result["pk"]}" title="Archive">
                                 </div>
                                 </div>`;
+                                archiveNoteEventListener(noteElement.querySelectorAll("#archive-note-btn"))
                                 showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
                                 hideCheckboxEventListener(noteElement.querySelectorAll("#hide-checkbox-note-btn"))
                                 taskEventListener(noteElement.querySelectorAll(".task"))
@@ -307,6 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </div>`;
                                 showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
                                 hideCheckboxEventListener(noteElement.querySelectorAll("#hide-checkbox-note-btn"))
+                                archiveNoteEventListener(noteElement.querySelectorAll("#archive-note-btn"))
                                 taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
