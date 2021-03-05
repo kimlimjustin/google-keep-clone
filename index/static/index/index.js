@@ -186,6 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                     }
                                 </div>
                                 </div>`;
+                                showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
+                                hideCheckboxEventListener(noteElement.querySelectorAll("#hide-checkbox-note-btn"))
                                 taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
@@ -301,6 +303,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                     }
                                 </div>
                                 </div>`;
+                                showCheckboxEventListener(noteElement.querySelectorAll("#show-checkbox-note-btn"))
+                                hideCheckboxEventListener(noteElement.querySelectorAll("#hide-checkbox-note-btn"))
                                 taskEventListener(noteElement.querySelectorAll(".task"))
                                 if(document.querySelector(".notes-grid"))document.querySelector(".notes-grid").insertBefore(noteElement, document.querySelector(".notes-grid").firstChild)
                                 else document.querySelector(".notes").insertBefore(noteElement, document.querySelector(".notes").firstChild)
