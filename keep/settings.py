@@ -32,7 +32,7 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 80))
 
-ALLOWED_HOSTS = [s.getsockname()[0], '127.0.0.1', 'google-keep-clone.herokuapp.com']
+ALLOWED_HOSTS = [s.getsockname()[0], '127.0.0.1', 'google-keeps-clone.herokuapp.com']
 s.close()
 
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -123,13 +124,14 @@ USE_L10N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = "index.User"
+'''
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-
+'''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
