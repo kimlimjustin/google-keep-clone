@@ -5,10 +5,8 @@ ENV PYTHONUNBUFFERED=1
 
 RUN mkdir /app
 
-COPY . /app/
+COPY requirements.txt /app/
 
 WORKDIR /app
 
 RUN pip install -r requirements.txt
-
-RUN python manage.py collectstatic

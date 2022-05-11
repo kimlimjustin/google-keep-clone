@@ -25,6 +25,11 @@ Try it online [here](https://google-keeps-clone.herokuapp.com/)!
     - To run it on your local network, type `python manage.py runserver 0.0.0.0:8000` and it will be accessible in your local network.
 - To deploy this project, remember to run `python manage.py collectstatic`
 
+## On Running Docker
+1. Build docker image using `docker-compose build` and run using `docker-compose up`
+2. When running any command like `python manage.py collectstatic`, just add `docker-compose exec web <command>`
+3. It has postgresql, so you can access with `docker-compose exec db psql -U postgres`
+
 ## License
 Distributed under the [MIT](https://github.com/kimlimjustin/google-keep-clone/blob/master/LICENSE) License. See [`LICENSE`](https://github.com/kimlimjustin/google-keep-clone/blob/master/LICENSE) for more information.
 
